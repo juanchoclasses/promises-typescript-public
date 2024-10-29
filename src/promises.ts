@@ -12,6 +12,8 @@ const screen = blessed.screen({
 // Toggle to determine whether to refresh in parallel or linearly.
 let refreshInParallel = true;
 
+let secondsElapsed = 0;
+
 
 // Create a title box.
 // This box displays the title at the top of the screen.
@@ -20,7 +22,7 @@ const titleBox = blessed.box({
     left: 'center',
     width: '70%',
     height: 3,
-    content: `{center}Animals of the World - Mode: ${refreshInParallel ? 'Parallel' : 'Linear'}{/center}`, // Centered title text.
+    content: `{center}Time Elapsed ${secondsElapsed}:Animals of the World - Mode: ${refreshInParallel ? 'Parallel' : 'Linear'}{/center}`, // Centered title text.
     tags: true, // Enables tag-based formatting for content.
     border: {
         type: 'line',
@@ -32,6 +34,17 @@ const titleBox = blessed.box({
     },
 });
 screen.append(titleBox); // Append the title box to the screen.
+
+// Function to update the timer every second.
+const updateTimer = () => {
+    setInterval(() => {
+        secondsElapsed += 1;
+        titleBox.setContent(`{center}Time Elapsed: ${secondsElapsed} - Animals of the World - Mode: ${refreshInParallel ? 'Parallel' : 'Linear'}{/center}`);
+        screen.render();
+    }, 1000);
+};
+
+updateTimer(); // Start the timer.
 
 // Create an instance of ItemGenerator.
 // This instance is used to fetch animal data asynchronously.

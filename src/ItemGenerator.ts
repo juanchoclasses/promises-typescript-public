@@ -40,7 +40,9 @@ class ItemGenerator {
         const delay = Math.floor(Math.random() * 3000) + 1000; // Random delay between 1-4 seconds
         return new Promise((resolve) => {
             setTimeout(() => {
+
                 resolve(this.items[i % this.items.length]);
+
             }, delay);
         });
     }

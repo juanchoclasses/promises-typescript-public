@@ -5,14 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "type": "node-terminal",
+            "name": "Promises",
             "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/src/promises.ts",
-            "runtimeExecutable": "ts-node",
-        }
+            "command": "ts-node src/promises.ts",
+            "cwd": "${workspaceFolder}"
+        },
     ]
 }

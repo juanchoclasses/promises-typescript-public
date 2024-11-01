@@ -55,9 +55,14 @@ screen.append(instructions);
 // Function to create a promise that resolves after a given time.
 const createPromise = (label: string, duration: number) => {
     return new Promise<string>((resolve) => {
-        setTimeout(() => {
-            resolve(`${label} fulfilled`);
-        }, duration);
+        const startTime = Date.now();
+        const interval = setInterval(() => {
+            const elapsedTime = Date.now() - startTime;
+            if (elapsedTime >= duration) {
+                clearInterval(interval);
+                resolve(`${label} fulfilled`);
+            }
+        }, 100); // Check every 0.1 second
     });
 };
 

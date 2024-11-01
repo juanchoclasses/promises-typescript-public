@@ -16,22 +16,22 @@ export default class OrderProcessor {
     }
 
     private async restaurantConfirmed() {
-        this.statusCallback(this.item, 'Restaurant confirmed your order.');
+        this.statusCallback(this.item, 'Confirmed.');
         await this.delay(this.getRandomDelay());
     }
 
     private async restaurantWorking() {
-        this.statusCallback(this.item, 'Restaurant is preparing your item.');
+        this.statusCallback(this.item, 'Preparing.');
         await this.delay(this.getRandomDelay());
     }
 
     private async deliveryPersonPickedUp() {
-        this.statusCallback(this.item, 'Delivery person has picked up your order.');
+        this.statusCallback(this.item, 'On way.');
         await this.delay(this.getRandomDelay());
     }
 
     private async deliveryComplete() {
-        this.statusCallback(this.item, 'Your order has been delivered. Enjoy your meal!');
+        this.statusCallback(this.item, 'Complete!');
     }
 
     private delay(ms: number) {

@@ -81,7 +81,7 @@ export const statusBox = blessed.box({
     left: '60%',
     width: '40%',
     height: '80%-3',
-    label: 'Status: Waiting for order selection',
+    label: 'Status: Waiting for order',
     border: {
         type: 'line',
     },

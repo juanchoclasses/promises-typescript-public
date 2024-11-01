@@ -20,16 +20,7 @@ import OrderProcessor from './OrderProcessor';
 // Key bindings for menu selection.
 screen.key(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (ch) => {
     if (getProcessingOrder()) {
-        orderBox.setLabel('Order Selection not allowed');
-        orderBox.setContent(
-            '\n' +
-            '{center}Unfortunately{/center}\n' +
-            '{center}the zippiest food company{/center}\n' +
-            '{center}is unable to process{/center}\n' +
-            '{center}more than one order at a{/center}\n' +
-            '{center}time.{/center}'
-        );
-        screen.render();
+        orderBox.setLabel('Not allowed');
         return;
     }
 
@@ -38,12 +29,12 @@ screen.key(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (ch) => {
 
     if (orderItems.includes(item)) {
         // Prevent duplicate selections.
-        statusBox.setContent(`You have already selected ${item}.`);
+        statusBox.setContent(`Already selected ${item}.`);
         screen.render();
     } else if (orderItems.length < 9) {
         orderItems.push(item);
         updateOrder();
-        statusBox.setLabel('Status: Waiting for order selection');
+        statusBox.setLabel('Status: Waiting for order');
         screen.render();
     }
 });
@@ -51,15 +42,7 @@ screen.key(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (ch) => {
 // Key binding for placing the order.
 screen.key(['o'], async () => {
     if (getProcessingOrder()) {
-        orderBox.setLabel('Order Selection not allowed');
-        orderBox.setContent(
-            '\n' +
-            '{center}Unfortunately{/center}\n' +
-            '{center}the zippiest food company{/center}\n' +
-            '{center}is unable to process{/center}\n' +
-            '{center}more than one order at a{/center}\n' +
-            '{center}time.{/center}'
-        );
+        orderBox.setLabel('Not allowed');
         screen.render();
         return;
     }
@@ -76,7 +59,7 @@ screen.key(['o'], async () => {
 
         // Update status to InProgress
         statusBox.setLabel('Status: InProgress');
-        orderBox.setLabel('Order Selection not allowed');
+        orderBox.setLabel('Not allowed');
         screen.render();
 
         // Create an array of promises for processing each item
@@ -95,7 +78,6 @@ screen.key(['o'], async () => {
         // Allow new orders to be taken
         setProcessingOrder(false);
         orderBox.setLabel('Order Open');
-        statusBox.setLabel('Status: Waiting for order selection');
         screen.render();
     }
 });

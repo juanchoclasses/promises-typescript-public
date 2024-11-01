@@ -11,5 +11,12 @@
             "command": "ts-node src/promises.ts",
             "cwd": "${workspaceFolder}"
         },
+        {
+            "type": "node-terminal",
+            "name": "DoorDash",
+            "request": "launch",
+            "command": "ts-node src/DoorDash.ts",
+            "cwd": "${workspaceFolder}"
+        },
     ]
 }

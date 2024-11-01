@@ -1,3 +1,5 @@
+import { RestaurantError } from './RestaurantError';
+
 // DoorDash.ts
 import {
     screen,
@@ -35,6 +37,7 @@ screen.key(['1', '2', '3', '4', '5', '6', '7', '8', '9'], (ch) => {
         orderItems.push(item);
         updateOrder();
         statusBox.setLabel('Status: Waiting for order');
+        statusBox.setContent('');
         screen.render();
     }
 });
@@ -69,11 +72,46 @@ screen.key(['o'], async () => {
         });
 
         // Wait for all promises to resolve
-        await Promise.all(promises);
+        const results = await Promise.allSettled(promises);
 
-        // Update status box title to "Status: Complete"
-        statusBox.setLabel('Status: Complete');
-        screen.render();
+        let summaryMessage = 'Successfully delivered:\n*****************\n';
+        let summaryTitle = 'Status: Complete';
+
+        // Check for fulfilled promises
+
+        const fulfilledItems = results.filter(result => result.status === 'fulfilled');
+
+        if (fulfilledItems.length === 0) {
+            summaryMessage = '';
+        }
+
+        fulfilledItems.forEach(result => {
+            const { value } = result as any;
+            summaryMessage += `${value}\n`;
+        });
+
+
+
+        // Check for rejected promises
+        const rejectedItems = results.filter(result => result.status === 'rejected');
+
+        if (rejectedItems.length > 0) {
+            summaryMessage += '*****************\nFailed to deliver:\n*****************\n';
+            rejectedItems.forEach(result => {
+                const { reason } = result as any;
+
+
+                const item = reason.item;
+                const explanation = reason.explanation;
+                summaryMessage += `${item}: ${explanation}\n`;
+
+            });
+            summaryTitle = 'Status: Incomplete';
+
+        }
+        // Update status box with summary message
+        statusBox.setLabel(summaryTitle);
+        statusBox.setContent(summaryMessage);
 
         // Allow new orders to be taken
         setProcessingOrder(false);

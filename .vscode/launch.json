@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "node-terminal",
+            "name": "BasicPromises",
+            "request": "launch",
+            "command": "ts-node src/BasicPromises/BasicPromises.ts",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "node-terminal",
             "name": "Animals",
             "request": "launch",
             "command": "ts-node src/Animals/Animals.ts",

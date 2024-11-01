@@ -11,26 +11,36 @@ export default class OrderProcessor {
         this.statusCallback = statusCallback;
     }
 
-    async processOrder(): Promise<string> {
-        const confirmed = await this.restaurantConfirmed();
-        if (!confirmed) {
-            throw new RestaurantError(this.item, 'Restaurant Rejected.');
-        }
-        const complete = await this.restaurantWorking();
-        if (!complete) {
-            throw new RestaurantError(this.item, 'Restaurant Incomplete.');
-        }
-
-        const pickedUp = await this.deliveryPersonPickedUp();
-        if (!pickedUp) {
-            throw new RestaurantError(this.item, 'Delivery Rejected.');
-        }
-
-        const delivered = await this.deliveryComplete();
-        if (!delivered) {
-            throw new RestaurantError(this.item, 'Delivery Lost.');
-        }
-        return this.item;
+    processOrder(): Promise<string> {
+        return this.restaurantConfirmed()
+            .then((confirmed) => {
+                if (!confirmed) {
+                    throw new RestaurantError(this.item, 'Restaurant Rejected.');
+                }
+                return this.restaurantWorking();
+            })
+            .then((complete) => {
+                if (!complete) {
+                    throw new RestaurantError(this.item, 'Restaurant Incomplete.');
+                }
+                return this.deliveryPersonPickedUp();
+            })
+            .then((pickedUp) => {
+                if (!pickedUp) {
+                    throw new RestaurantError(this.item, 'Delivery Rejected.');
+                }
+                return this.deliveryComplete();
+            })
+            .then((delivered) => {
+                if (!delivered) {
+                    throw new RestaurantError(this.item, 'Delivery Lost.');
+                }
+                return this.item;
+            })
+            .catch((error) => {
+                this.statusCallback(this.item, `Order failed: ${error.message}`);
+                throw error; // Re-throw the error to reject the promise
+            });
     }
 
     private async restaurantConfirmed(): Promise<boolean> {

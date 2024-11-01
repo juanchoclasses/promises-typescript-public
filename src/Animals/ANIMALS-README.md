@@ -1,4 +1,23 @@
-# README
+# Promises for parallel fetching of data
+
+There are two programs in this repository that demonstrate the use of Promises in JavaScript/TypeScript for fetching data asynchronously. The programs are terminal-based and use the `blessed` library for creating the user interface.
+
+## Installation
+
+To run the programs, you need to have Node.js installed on your system. You can download it from the official website: [Node.js](https://nodejs.org/).
+
+After installing Node.js, you can clone this repository using Git:
+
+```bash
+npm install
+```
+
+This will install the necessary dependencies for the programs.
+
+
+##  First program.
+
+#
 
 ## Overview
 
@@ -48,9 +67,9 @@ const exampleAnimals: Animal[] = [
 
 This array contains various animals, each with a name and a location, allowing the program to simulate different environments where the animals can be found.
 
-### Getting Data for the Grid in `promises.ts`
+### Getting Data for the Grid in `Animals.ts`
 
-In the `promises.ts` file, the grid is populated with animal data using the `ItemGenerator` class. There are two different methods to refresh the grid, each showcasing a different way to handle asynchronous operations:
+In the `Animals.ts` file, the grid is populated with animal data using the `ItemGenerator` class. There are two different methods to refresh the grid, each showcasing a different way to handle asynchronous operations:
 
 1. **Parallel Refresh (`refreshGrid`)**: In this method, data for all the grid elements is fetched concurrently using `Promise.all()`. This is useful to demonstrate how multiple asynchronous requests can be executed in parallel, reducing the overall wait time for data fetching.
 
@@ -94,7 +113,33 @@ const refreshGridLinear = async () => {
 
 In this method, each cell waits for its data to be fetched before moving on to the next, which provides a clearer visual representation of how data flows into the grid, but it may take longer overall compared to the parallel approach.
 
-The ability to toggle between these two refresh modes (`r` key for refresh and `t` key for toggling between parallel and linear modes) provides an interactive way to learn about the differences in asynchronous operations and how they impact the user experience.
 
-### Running the Application
+
+There is a third mode where the data is updated when the first promise is fulfilled. This is done by using the `Promise.race` method. This method returns a promise that resolves or rejects as soon as one of the promises in the iterable resolves or rejects, with the value of the resolved promise. This is useful when you want to get the fastest response among multiple asynchronous operations.
+
+```typescript
+ // Fetch items
+    const promises: Promise<void>[] = [];
+    for (let row = 0; row < grid.length; row++) {
+        for (let col = 0; col < grid[row].length; col++) {
+            const itemIndex = Math.floor(Math.random() * 100);
+            const promise = itemGenerator.getItem(itemIndex).then((item: Animal) => {
+                const message = ` ${item.name}\n Happy ${item.location === 'land' ? 'on' : 'in'} ${item.location}`;
+                grid[row][col].setContent(message);
+                screen.render();
+            });
+            promises.push(promise);
+        }
+```
+
+### Running the Application  The Animals application can be run from the launch menu or can be run with 
+    
+    ```bash
+    ts-node src/Animals.ts
+    ```
+
+The application will start in the terminal, displaying a grid with animal data fetched asynchronously. You can interact with the application by pressing the following keys:
+
+- `r`: Refresh the grid with new animal data.
+- `t`: Toggle between parallel, linear, and race refresh modes.
 

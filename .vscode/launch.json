@@ -6,16 +6,16 @@
     "configurations": [
         {
             "type": "node-terminal",
-            "name": "Promises",
+            "name": "Animals",
             "request": "launch",
-            "command": "ts-node src/promises.ts",
+            "command": "ts-node src/Animals/Animals.ts",
             "cwd": "${workspaceFolder}"
         },
         {
             "type": "node-terminal",
             "name": "DoorDash",
             "request": "launch",
-            "command": "ts-node src/DoorDash.ts",
+            "command": "ts-node src/DoorDash/DoorDash.ts",
             "cwd": "${workspaceFolder}"
         },
     ]

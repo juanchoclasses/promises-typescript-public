@@ -52,10 +52,17 @@ const instructions = blessed.box({
 });
 screen.append(instructions);
 
-// Function to create a promise that resolves after a given time.
-const createPromise = (label: string, duration: number) => {
+// In this example we are going to make promises that always succeed. We will create
+// the promises that take a duration in milliseconds and resolve after that duration.
+const createPromise = (label: string, duration: number): Promise<string> => {
     return new Promise<string>((resolve) => {
+        // This is the executor part of the promise.  this code will run immediately
+        // when the promise is created.
         const startTime = Date.now();
+
+        // Here we are simulating a long running task by checking the elapsed time
+        // every 100 milliseconds.  When the elapsed time is greater than or equal to
+        // the duration, we resolve the promise.
         const interval = setInterval(() => {
             const elapsedTime = Date.now() - startTime;
             if (elapsedTime >= duration) {
@@ -63,6 +70,9 @@ const createPromise = (label: string, duration: number) => {
                 resolve(`${label} fulfilled`);
             }
         }, 100); // Check every 0.1 second
+
+        // This is the end of the executor function.  The promise will resolve when
+        // the resolve function is called.
     });
 };
 

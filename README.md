@@ -9,26 +9,27 @@ A promise is an object that represents the eventual completion (or failure) of a
     Below is a Mermaid diagram that visualizes the promise processing flow:
 ```mermaid
 flowchart TD
-A[Promise Initialization] --> B{Executor Execution}
-B -->|Success| C[resolve Function]
-B -->|Failure| D[reject Function]
+ A[Promise Initialization] --> B[Set State to PENDING]
+B --> C{Executor Execution}
+C -->|Success| D[resolve Function]
+C -->|Failure| E[reject Function]
 
-C --> E[Set State to FULFILLED]
-E --> F{Has onFulfilled?}
-F -->|Yes| G[Call onFulfilled with Result]
-F -->|No| H[Do Nothing]
+D --> F[Set State to FULFILLED]
+F --> G{Has onFulfilled?}
+G -->|Yes| H[Call onFulfilled with Result]
+G -->|No| I[Do Nothing]
 
-D --> I[Set State to REJECTED]
-I --> J{Has onRejected?}
-J -->|Yes| K[Call onRejected with Error]
-J -->|No| L[Do Nothing]
+E --> J[Set State to REJECTED]
+J --> K{Has onRejected?}
+K -->|Yes| L[Call onRejected with Error]
+K -->|No| M[Do Nothing]
 
-M[then Method] --> N{State is FULFILLED?}
-N -->|Yes| O[Call onFulfilled with Result]
-N -->|No, State is PENDING| P[Store onFulfilled Callback]
+N[then Method] --> O{State is FULFILLED?}
+O -->|Yes| P[Call onFulfilled with Result]
+O -->|No, State is PENDING| Q[Store onFulfilled Callback]
 
-Q[catch Method] --> R{State is REJECTED?}
-R -->|Yes| S[Call onRejected with Error]
-R -->|No, State is PENDING| T[Store onRejected Callback]
+R[catch Method] --> S{State is REJECTED?}
+S -->|Yes| T[Call onRejected with Error]
+S -->|No, State is PENDING| U[Store onRejected Callback]
 ```
     
